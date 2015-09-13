@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from jts_datashape import *
+from datashape import dshape
 
 SCHEMA = {
     'fields': [
@@ -27,14 +28,14 @@ SCHEMA = {
 # ===
 
 def test_jts_to_datashape():
-    expected = "var * {'foo':int,'bar':string,'field2':float,'field3':bool}"
-    result = jts_to_datashape(SCHEMA, datashape_formatter=DatashapeNoFormatter)
+    expected = dshape("var * {'foo':int,'bar':string,'field2':float64,'field3':bool}")
+    result = jts_to_datashape(SCHEMA)
     print(expected)
     print(result)
     assert result == expected
 
-    expected = "var * {'foo':?int,'bar':?string,'field2':?float,'field3':?bool}"
-    result = jts_to_datashape(SCHEMA, missing=True, datashape_formatter=DatashapeNoFormatter)
+    expected = dshape("var * {'foo':?int,'bar':?string,'field2':?float64,'field3':?bool}")
+    result = jts_to_datashape(SCHEMA, missing=True)
     assert result == expected
 
 # ===
@@ -43,7 +44,7 @@ def test_jts_field_to_dtype_string():
     assert jts_field_to_dtype(SCHEMA['fields'][1]) == 'string'
 
 def test_jts_field_to_dtype_number():
-    assert jts_field_to_dtype(SCHEMA['fields'][2]) == 'float'
+    assert jts_field_to_dtype(SCHEMA['fields'][2]) == 'float64'
 
 def test_jts_field_to_dtype_integer():
     assert jts_field_to_dtype(SCHEMA['fields'][0]) == 'int'

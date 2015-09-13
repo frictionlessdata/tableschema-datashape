@@ -28,7 +28,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     test_suite='nose.collector',
-    install_requires=[],
+    install_requires=['datashape'],
     tests_require=[
         'nose',
         'coverage',

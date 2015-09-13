@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import warnings
+from datashape import dshape
 
 D_TYPES_FIELD_TO_DTYPE =  {
     'string': 'string',
-    'number': 'float',
+    'number': 'float64',
     'integer': 'int',
     'boolean': 'bool',
     'null': 'void',
@@ -66,8 +67,12 @@ def jts_field_to_dtype(field, missing=False):
         warnings.warn(msg)
         return s_missing + DTYPE_DEFAULT
 
-def jts_to_datashape(schema, missing=False, datashape_formatter=DatashapeDefaultFormatter):
+def jts_to_datashape(schema, missing=False):
     """Converts a JSON Table Schema to a Datashape"""
+    return dshape(_jts_to_string_datashape(schema, missing, datashape_formatter=DatashapeNoFormatter))
+
+def _jts_to_string_datashape(schema, missing=False, datashape_formatter=DatashapeDefaultFormatter):
+    """Converts a JSON Table Schema to a string that could be convert to Datashape"""
     line_feed = datashape_formatter.LINE_FEED
     indent = datashape_formatter.INDENT
     key_val_sep = datashape_formatter.KEY_VAL_SEP
